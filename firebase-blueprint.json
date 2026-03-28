@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user profile information and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier for the user." },
+        "email": { "type": "string", "format": "email", "description": "User's email address." },
+        "displayName": { "type": "string", "description": "User's display name." },
+        "photoURL": { "type": "string", "format": "uri", "description": "URL to user's profile photo." },
+        "role": { "type": "string", "enum": ["buyer", "seller", "admin"], "description": "User's role in the marketplace." },
+        "bio": { "type": "string", "description": "User's biography." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the user account was created." }
+      },
+      "required": ["uid", "email", "displayName", "role", "createdAt"]
+    },
+    "Listing": {
+      "title": "Marketplace Listing",
+      "description": "Represents a digital asset for sale.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the listing." },
+        "sellerId": { "type": "string", "description": "UID of the seller." },
+        "sellerName": { "type": "string", "description": "Name of the seller for denormalization." },
+        "title": { "type": "string", "description": "Title of the listing." },
+        "description": { "type": "string", "description": "Detailed description of the listing." },
+        "price": { "type": "number", "description": "Price of the listing in USD." },
+        "category": { "type": "string", "description": "Category of the asset." },
+        "tags": { "type": "array", "items": { "type": "string" }, "description": "Searchable tags." },
+        "images": { "type": "array", "items": { "type": "string", "format": "uri" }, "description": "URLs to listing images." },
+        "rating": { "type": "number", "description": "Average rating." },
+        "reviewCount": { "type": "integer", "description": "Number of reviews." },
+        "salesCount": { "type": "integer", "description": "Number of successful sales." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "sellerId", "title", "price", "category", "createdAt"]
+    },
+    "Order": {
+      "title": "Transaction Order",
+      "description": "Records a purchase transaction.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the order." },
+        "buyerId": { "type": "string", "description": "UID of the buyer." },
+        "sellerId": { "type": "string", "description": "UID of the seller." },
+        "listingId": { "type": "string", "description": "ID of the purchased listing." },
+        "listingTitle": { "type": "string", "description": "Title of the listing at time of purchase." },
+        "amount": { "type": "number", "description": "Amount paid." },
+        "status": { "type": "string", "enum": ["pending", "completed", "refunded"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "buyerId", "sellerId", "listingId", "amount", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "User profile documents."
+    },
+    "/listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Marketplace listings."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Transaction records."
+    }
+  }
+}

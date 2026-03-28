@@ -1,0 +1,9 @@
+{
+  "name": "Nexus Marketplace",
+  "description": "A high-converting digital assets marketplace for creators and developers.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
